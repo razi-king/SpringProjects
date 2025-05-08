@@ -1,0 +1,70 @@
+package com.example.chatApplication.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.chatApplication.dto.Message;
+import com.example.chatApplication.dto.Room;
+import com.example.chatApplication.service.RoomService;
+
+@RestController
+@RequestMapping("/api/v1/room")
+public class RoomController {
+	@Autowired
+	RoomService roomService;
+	
+	//Create Room 
+	@PostMapping
+	public ResponseEntity<?> createRoom(@RequestBody String roomId) {
+		if(roomService.findByRoomID(roomId)!=null) {
+			return ResponseEntity.badRequest().body("Room Already Exists");
+		}
+		//Creating New Room
+		Room room = new Room();
+		room.setRoomId(roomId);
+		roomService.saveRoom(room);
+		return ResponseEntity.status(HttpStatus.CREATED).body(room);
+		
+	}
+	//Get Room : Join
+	@GetMapping("/{roomId}")
+	public ResponseEntity<?> getRoom(@PathVariable String roomId){
+		Room room = new Room();
+		room = roomService.findByRoomID(roomId);
+		if(room!=null) {
+			return ResponseEntity.ok(room);
+		}
+		return ResponseEntity.badRequest().body("Room Not Found");
+	}
+	//Get Messages Of Room
+	@GetMapping("/{roomId}/messages")
+	public ResponseEntity<List<Message>> getMessage(@PathVariable String roomId,
+													@RequestParam(value="page",defaultValue = "0",required = false) int page,
+													@RequestParam(value="size",defaultValue = "20",required = false) int size){
+		Room room = new Room();
+		room = roomService.findByRoomID(roomId);
+		if(room!=null) {
+			//Get Message:
+			//Pagination:
+			List<Message> message = room.getMessage();
+			int start = Math.max(0,message.size()-(page+1)*size);
+			int end = Math.min(message.size(), start+size);
+			List<Message> paginatedMessage = message.subList(start, end);
+			return ResponseEntity.ok(paginatedMessage);
+		}
+		return ResponseEntity.badRequest().build();
+	}
+	
+}

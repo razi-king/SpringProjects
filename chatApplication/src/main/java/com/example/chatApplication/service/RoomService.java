@@ -1,0 +1,19 @@
+package com.example.chatApplication.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.chatApplication.dto.Room;
+import com.example.chatApplication.repository.RoomRepository;
+
+@Service
+public class RoomService  {
+	@Autowired
+	RoomRepository roomRepository;
+	public Room findByRoomID(String roomID) {
+		return (Room) roomRepository.findRoomByRoomId(roomID);
+	}
+	public void saveRoom(Room r) {
+		roomRepository.save(r);
+	}
+}

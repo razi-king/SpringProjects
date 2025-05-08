@@ -1,0 +1,5 @@
+package com.example.chatApplication.dto;
+
+public class Room {
+
+}
