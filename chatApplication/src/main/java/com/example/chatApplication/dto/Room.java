@@ -3,6 +3,7 @@ package com.example.chatApplication.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +23,7 @@ public class Room {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String roomId;
+	@ElementCollection
 	private List<Message> message = new ArrayList<>();
 
 }

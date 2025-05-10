@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Embeddable
 public class Message {
 	private String sender;
 	private String content;
