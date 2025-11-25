@@ -19,6 +19,8 @@ import com.example.chatApplication.dto.Room;
 import com.example.chatApplication.payload.MessageRequest;
 import com.example.chatApplication.service.RoomService;
 
+import jakarta.transaction.Transactional;
+
 @Controller
 @CrossOrigin("http://localhost:5173")
 public class ChatController {
@@ -27,6 +29,7 @@ public class ChatController {
     RoomService roomService;
 
     // For Sending And Receiving Message
+    @Transactional
     @MessageMapping("/sendMessage/{roomId}")
     @SendTo("/topic/room/{roomId}")
     public Message sendMessage(
@@ -49,7 +52,7 @@ public class ChatController {
         message.setContent(request.getContent());
         message.setSender(request.getSender());
         message.setTimeStamp(LocalDateTime.now());
-        room.getMessage().add(message);
+        room.getMessages().add(message);
         roomService.saveRoom(room);
         
         return message;

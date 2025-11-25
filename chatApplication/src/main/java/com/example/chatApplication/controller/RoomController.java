@@ -60,7 +60,7 @@ public class RoomController {
 		if(room!=null) {
 			//Get Message:
 			//Pagination:
-			List<Message> message = room.getMessage();
+			List<Message> message = room.getMessages();
 			int start = Math.max(0,message.size()-(page+1)*size);
 			int end = Math.min(message.size(), start+size);
 			List<Message> paginatedMessage = message.subList(start, end);
