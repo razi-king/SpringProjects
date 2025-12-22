@@ -77,7 +77,7 @@ public class RoomServiceImpl implements RoomService {
 	    if (room == null) {
 	        throw new ResourceNotFoundException(
 	                "Room Not Found For This Room Id " + roomId,
-	                ErrorCode.ROOM_IS_NOT_FOUND);
+	                ErrorCode.ROOM_NOT_FOUND);
 	    }
 
 	    List<Message> messageList = room.getMessage();
