@@ -1,1 +1,9 @@
 /.metadata/
+
+# added by cleanup
+node_modules/
+target/
+.metadata/
+*.zip
+*.rar
+.env
