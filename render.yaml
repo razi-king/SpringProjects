@@ -1,0 +1,15 @@
+# Render Blueprint for the real-time chat backend.
+# Render dashboard → New → Blueprint → pick this repo, then fill in MONGODB_URI.
+services:
+  - type: web
+    name: razi-chat-api
+    runtime: docker
+    plan: free
+    rootDir: ChatAppBackend
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    envVars:
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://razi-king.github.io
+      - key: MONGODB_URI        # MongoDB Atlas connection string, ending in /chatapp
+        sync: false

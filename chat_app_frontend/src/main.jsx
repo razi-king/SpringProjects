@@ -9,7 +9,7 @@ import { ChatProvider } from './Context/ChatContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Toaster/>
       <ChatProvider>
       <MyRoutes/>

@@ -1,0 +1,50 @@
+name: Deploy chat frontend to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths: ["chat_app_frontend/**", ".github/workflows/chat-frontend-pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: chat_app_frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: chat_app_frontend/package-lock.json
+      - run: npm ci
+      - run: npm run build
+        env:
+          BASE_PATH: /SpringProjects/
+          # Settings → Secrets and variables → Actions → Variables → CHAT_API_URL (your Render URL)
+          VITE_API_URL: ${{ vars.CHAT_API_URL }}
+      - run: cp dist/index.html dist/404.html   # SPA fallback for /SpringProjects/chat
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: chat_app_frontend/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
