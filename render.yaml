@@ -7,6 +7,7 @@ services:
     plan: free
     rootDir: ChatAppBackend
     dockerfilePath: ./Dockerfile
+    healthCheckPath: /healthz
     autoDeploy: true
     envVars:
       - key: CORS_ALLOWED_ORIGINS

@@ -1,24 +1,13 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import toast from 'react-hot-toast'
-import JoinCreateChat from './Components/JoinCreateChat'
+import { Route, Routes, Navigate } from 'react-router'
+import Lobby from './pages/Lobby'
+import ChatRoom from './pages/ChatRoom'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    // <div>
-    //   <h1>This Is Main Page:</h1>
-    //   <button onClick={()=>{toast.success("This Is Toast Message")}}>
-    //     Click Me
-    //   </button>
-    // </div>
-    <>
-      <JoinCreateChat/>
-    </>
+    <Routes>
+      <Route path="/" element={<Lobby />} />
+      <Route path="/room/:roomId" element={<ChatRoom />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
-
-export default App
