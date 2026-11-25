@@ -13,16 +13,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	@Value("${app.cors.allowed-origins}")
 	private String[] allowedOrigins;
 
-	@Override 
+	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
 		config.enableSimpleBroker("/topic");
-		// /topic/message
 		config.setApplicationDestinationPrefixes("/app");
 	}
-	@Override 
+
+	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/chat") // /chat Endpoint Par Hamara Connection Establish Hoga 
-				.setAllowedOriginPatterns(allowedOrigins)
-				.withSockJS(); // for Fall Back
+		// SockJS falls back to HTTP streaming/polling where WebSockets are blocked.
+		registry.addEndpoint("/chat").setAllowedOriginPatterns(allowedOrigins).withSockJS();
 	}
 }
